@@ -3,14 +3,19 @@ import "../assets/css/sidebar.css";
 import Avatar from "./Avatar";
 import ChatItem from "./ChatItem";
 import ContactItem from "./ContactItem";
+import Profile from "./Profile";
 
 export default function Sidebar({ setChat }) {
   const [newChat, setNewChat] = useState(false);
+  const [onProfile, setOnProfile] = useState(false);
+
+  console.log(onProfile);
   return (
     <div className="sidebar">
+      <Profile open={onProfile} setOpen={setOnProfile} />
       <div className="wrapper">
         <div className="top">
-          <div>
+          <div style={{cursor: "pointer"}} onClick={() => setOnProfile(true)}>
             <Avatar src="" height={45} width={45} />
           </div>
           {newChat && <span className="heading">Add Conversation</span>}

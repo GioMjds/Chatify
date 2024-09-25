@@ -131,7 +131,7 @@
     }
 }
 
-@media (max-width: 58px) {
+@media (max-width: 580px) {
     .sidebar {
         width: 100%;
     }

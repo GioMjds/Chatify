@@ -2,8 +2,9 @@ import { useState } from "react";
 import "../assets/css/content.css";
 import { SeedMessages } from "../data/Messages";
 import Avatar from "./Avatar";
-import Message from "./Message";
 import ImageSlider from "./ImageSlider";
+import InfoContainer from "./InfoContainer";
+import Message from "./Message";
 
 export default function Content({chat, setChat}) {
   const [onMenu, setOnMenu] = useState(false);
@@ -23,13 +24,13 @@ export default function Content({chat, setChat}) {
 
   return (
     <div className={chat ? "content active" : "content"}>
-      <div className="wrapper">
+      {chat ? (<div className="wrapper">
         <div className="top">
           <Avatar username={"Mimic1"} height={45} width={45} />
           <div className="app-icon menu-icon" onClick={() => setOnMenu(prev => !prev)}>
             <i className="fa-solid fa-ellipsis"></i>
             {onMenu && (<div className="menu-wrapper">
-              <span className="menu-item">Close Chat</span>
+              <span className="menu-item" onClick={() => setChat(false)}>Close Chat</span>
               <span className="menu-item">Delete Messages</span>
               <span className="menu-item">Delete Chat</span>
             </div>)}
@@ -62,6 +63,9 @@ export default function Content({chat, setChat}) {
           </div>
         </div>
       </div>
+      ) : (
+      <InfoContainer/>
+      )}
     </div>
   )
 }

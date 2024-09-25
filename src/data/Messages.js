@@ -1,5 +1,5 @@
-import Img1 from "../assets/images/img1.png";
-import Img2 from "../assets/images/img2.png";
+import Img1 from "../assets/images/mimic1.jpg";
+import Img2 from "../assets/images/mimic2.jpg";
 import Img3 from "../assets/images/img3.png";
 
 export const SeedMessages = [
