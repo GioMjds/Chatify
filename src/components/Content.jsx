@@ -3,6 +3,7 @@ import "../assets/css/content.css";
 import { SeedMessages } from "../data/Messages";
 import Avatar from "./Avatar";
 import Message from "./Message";
+import ImageSlider from "./ImageSlider";
 
 export default function Content() {
   const [onMenu, setOnMenu] = useState(false);
@@ -37,26 +38,25 @@ export default function Content() {
         <div className="center">
           {msgImages.length > 0 && onViewer ? (
             <div className="image-viewer-wrapper">
-              <h2>Images</h2>
-              <button onClick={closeImageViewer}>Close</button>
+              <ImageSlider images={msgImages} onClose={closeImageViewer} />
             </div>
-          ) : ( 
-          <div className="messages-wrapper">
-            {messages.map((msg) => (
-              <Message
-                key={msg?.id}
-                msg={msg}
-                owner={msg?.owner}
-                openImageViewer={openImageViewer}
-              />
-            ))}
-          </div>)}
+          ) : (
+            <div className="messages-wrapper">
+              {messages.map((msg) => (
+                <Message
+                  key={msg?.id}
+                  msg={msg}
+                  owner={msg?.owner}
+                  openImageViewer={openImageViewer}
+                />
+              ))}
+            </div>)}
         </div>
         <div className="bottom">
           <div className="app-icon">
             <i className="fa-solid fa-image"></i>
           </div>
-          <textarea placeholder="Write a message"/>
+          <textarea placeholder="Write a message" />
           <div className="app-icon">
             <i className="fa-solid fa-paper-plane"></i>
           </div>
