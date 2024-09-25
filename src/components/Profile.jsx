@@ -14,17 +14,22 @@ export default function Profile({ open, setOpen }) {
                 </div>
             </div>
 
-            {onEdit ? (<div className="profile-infos">
+        {onEdit ? (
+            <div className="profile-infos">
                 <div className="avatar-wrapper">
                     <Avatar height={150} width={150} />
                     <i className="fa-solid fa-camera"></i>
                 </div>
-                <form action={() =>{}} className="profile-form">
+                <form onSubmit={() =>{}} className="profile-form">
                     <input type="text" placeholder="Username" />
-                    <textarea name="" placeholder="Write something about yourself" />
-                    <div className="profile-ac">
-                        <button onClick={() => setOnEdit(true)} className="cancel-btn">Cancel</button>
-                        <button type="submit" className="save-btn">Save</button>
+                    <textarea type="text" placeholder="Write something about yourself" />
+                    <div className="profile-actions">
+                        <button onClick={() => setOnEdit(false)} className="cancel-btn">
+                            Cancel
+                        </button>
+                        <button type="submit" className="save-btn">
+                            Save
+                        </button>
                     </div>
                 </form>
             </div>

@@ -91,7 +91,7 @@
 .contact-item,
 .chat-item {
     padding: 0.8rem 1rem;
-    border-bottom: var(--border);
+    border-bottom: var(--border-light);
     cursor: pointer;
 }
 
