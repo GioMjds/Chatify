@@ -76,3 +76,18 @@
     border: none;
     background-color: var(--bg-light);
 }
+
+.content .wrapper .center {
+    height: calc(100vh - 140px);
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.08);
+}
+
+.content .wrapper .center .messages-wrapper {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+}
+

@@ -1,10 +1,24 @@
 import { useState } from "react";
 import "../assets/css/content.css";
+import { SeedMessages } from "../data/Messages";
 import Avatar from "./Avatar";
 import Message from "./Message";
 
 export default function Content() {
-const [onMenu, setOnMenu] = useState(false);
+  const [onMenu, setOnMenu] = useState(false);
+  const [onViewer, setOnViewer] = useState(false);
+  const [messages, setMessages] = useState(SeedMessages);
+  const [msgImages, setMsgImages] = useState([]);
+
+  const openImageViewer = (images) => {
+    setMsgImages(images);
+    setOnViewer(true);
+  }
+
+  const closeImageViewer = () => {
+    setMsgImages([]);
+    setOnViewer(false);
+  }
 
   return (
     <div className="content">
@@ -21,12 +35,22 @@ const [onMenu, setOnMenu] = useState(false);
           </div>
         </div>
         <div className="center">
-          <div className="image-viewer-wrapper">Images</div>
+          {msgImages.length > 0 && onViewer ? (
+            <div className="image-viewer-wrapper">
+              <h2>Images</h2>
+              <button onClick={closeImageViewer}>Close</button>
+            </div>
+          ) : ( 
           <div className="messages-wrapper">
-            {[...Array(50)].map((msg, index) => (
-                <Message key={index} />
+            {messages.map((msg) => (
+              <Message
+                key={msg?.id}
+                msg={msg}
+                owner={msg?.owner}
+                openImageViewer={openImageViewer}
+              />
             ))}
-          </div>
+          </div>)}
         </div>
         <div className="bottom">
           <div className="app-icon">
