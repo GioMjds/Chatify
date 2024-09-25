@@ -4,7 +4,7 @@ import Avatar from "./Avatar";
 import ChatItem from "./ChatItem";
 import ContactItem from "./ContactItem";
 
-export default function Sidebar() {
+export default function Sidebar({ setChat }) {
   const [newChat, setNewChat] = useState(false);
   return (
     <div className="sidebar">
@@ -35,7 +35,7 @@ export default function Sidebar() {
           ) : (
             <div className="items-wrapper">
               {[...Array(50)].map((chat, index) => (
-                <ChatItem key={index} />
+                <ChatItem setChat={setChat} key={index} />
               ))}
             </div>
             )}

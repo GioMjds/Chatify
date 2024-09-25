@@ -5,7 +5,7 @@ import Avatar from "./Avatar";
 import Message from "./Message";
 import ImageSlider from "./ImageSlider";
 
-export default function Content() {
+export default function Content({chat, setChat}) {
   const [onMenu, setOnMenu] = useState(false);
   const [onViewer, setOnViewer] = useState(false);
   const [messages, setMessages] = useState(SeedMessages);
@@ -22,7 +22,7 @@ export default function Content() {
   }
 
   return (
-    <div className="content">
+    <div className={chat ? "content active" : "content"}>
       <div className="wrapper">
         <div className="top">
           <Avatar username={"Mimic1"} height={45} width={45} />

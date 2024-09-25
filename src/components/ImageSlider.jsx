@@ -15,7 +15,8 @@ export default function ImageSlider({images, onClose}) {
         <Swiper
             loop={true}
             navigation={false}
-            pagination={[Pagination]}
+            pagination={true}
+            modules={[Pagination]}
             spaceBetween={0}
             slidesPerView={1}
         >
