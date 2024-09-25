@@ -1,0 +1,78 @@
+.content {
+    width: calc(100% - 350px);
+    min-height: 100vh;
+    background-color: var(--white);
+}
+
+.content .wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.content .wrapper .top {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: var(--border);
+    padding: 0 1rem;
+}
+
+.menu-icon {
+    position: relative;
+}
+
+.menu-wrapper {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    min-width: 180px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.3rem;
+    background-color: var(--white);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    z-index: 50;
+}
+
+.menu-item {
+    padding: 0.6rem 0.8rem;
+    display: flex;
+    align-items: center;
+    color: var(--black);
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.menu-item:hover {
+    color: var(--blue);
+    background-color: var(--bg-light);
+}
+
+.content .wrapper .bottom {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: space-between;
+    border-top: var(--border);
+    padding: 0 1rem;
+    position: relative;
+}
+
+.content .wrapper .bottom .app-icon i {
+    color: var(--blue);
+}
+
+.content .wrapper .bottom textarea {
+    resize: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    height: 50px;
+    flex-grow: 1;
+    border-radius: 0.3rem;
+    outline: none;
+    border: none;
+    background-color: var(--bg-light);
+}
