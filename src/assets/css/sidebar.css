@@ -27,6 +27,7 @@
     height: 70px;
     display: flex;
     align-items: center;
+    justify-content: center;
     border-top: var(--border);
     padding: 0 1rem;
 }
