@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import "../assets/css/register.css";
 import { registerAsync } from "../services/authServices";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const emailRef = useRef();
@@ -9,6 +10,8 @@ export default function Register() {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const clearInputs = () => {
     if (emailRef?.current) {
@@ -37,6 +40,8 @@ export default function Register() {
       await registerAsync(creds);
       clearInputs();
       setLoading(false);
+      navigate("/login");
+      
     } catch (error) {
       const message = error.code;
       setError(message);
@@ -53,7 +58,9 @@ export default function Register() {
           <input required ref={nameRef} type="text" placeholder="Username" />
           <input required ref={emailRef} type="email" placeholder="Email" />
           <input required ref={passRef} type="password" placeholder="Password" />
-          <button disabled={loading} type="submit">{loading ? "Loading..." : "Register"}</button>
+          <button disabled={loading} type="submit">
+            {loading ? "Loading..." : "Register"}
+          </button>
           <span className="link">
             <a href="/login">Do you have an account already? Login here</a>
           </span>

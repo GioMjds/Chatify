@@ -3,29 +3,25 @@ import { auth } from "../config/firebase";
 import { createUserAsync } from "./chatServices";
 
 // Login
-export const loginAsync = async(creds) => {
+export const loginAsync = async (creds) => {
     return await signInWithEmailAndPassword(auth, creds.email, creds.password);
-}
+};
 
 // Register
-export const registerAsync = async(creds) => {
+export const registerAsync = async (creds) => {
     try {
-        const res = await createUserWithEmailAndPassword(
-            auth,
-            creds.email,
-            creds.password
-        );
+        const res = await createUserWithEmailAndPassword(auth, creds.email, creds.password);
         if (res.user) {
-            console.log(res.user);
+            console.log(res.user)
             await updateProfile(res.user, { displayName: creds.username });
-            await createUserAsync({ ...creds, uid: res.user.uid });
+            await createUserAsync({...creds, uid: res.user.uid});
         }
     } catch (error) {
         console.log(error);
     }
-}
+};
 
 // Log out
-export const logoutAsync = async() => {
+export const logoutAsync = async () => {
     return await signOut(auth);
 };

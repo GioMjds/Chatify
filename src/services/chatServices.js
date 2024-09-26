@@ -4,7 +4,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { auth, firestore as db, storage } from "../config/firebase";
 
 // Create User
-export const createUserAsync = async(creds) => {
+export const createUserAsync = async (creds) => {
     try {
         const user = {
             username: creds.username,
