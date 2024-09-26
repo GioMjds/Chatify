@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import "../assets/css/content.css";
 import { SeedMessages } from "../data/Messages";
 import Avatar from "./Avatar";
@@ -17,10 +17,22 @@ export default function Content({chat, setChat}) {
     setOnViewer(true);
   }
 
-  const closeImageViewer = () => {
+  const closeImageViewer = useCallback(() => {
     setMsgImages([]);
     setOnViewer(false);
-  }
+  })
+
+  useEffect(() => {
+    const keyDown = (event) => {
+      if (event.key === "Escape" && onViewer) {
+        closeImageViewer();
+      }
+    };
+    document.addEventListener('keydown', keyDown);
+    return () => {
+      document.removeEventListener('keydown', keyDown);
+    };
+  }, [onViewer, closeImageViewer]);
 
   return (
     <div className={chat ? "content active" : "content"}>

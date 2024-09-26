@@ -4,6 +4,7 @@ import { collection, getDocs, getDoc, addDoc, arrayUnion, updateDoc, deleteDoc, 
 import { updateProfile } from "firebase/auth";
 
 // Create User
+
 export const createUserAsync = async(creds) => {
     try {
         const user = {
@@ -57,8 +58,26 @@ export const deleteUserAsync = async(id) => {
 }
 
 // Get All Users
+export const getUsersAsync = async() => {
+    if (!user) return;
+    try {
+        const snapshot = await getDocs(query(collection(db, "users"), where("username", "!=", user.username)));
+        const users = snapshots.docs.map((item) => getSnapshotData(item));
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 // Get User
+export const getUserAsync = async(id) => {
+    try {
+        const userDoc = doc(db, "users", id);
+        const snapshot = await getDoc(userDoc);
+        return getSnapshotData(snapshot);
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 // Helper functions
 
