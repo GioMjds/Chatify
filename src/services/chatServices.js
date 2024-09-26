@@ -1,10 +1,9 @@
-import { getDownloadURL } from "firebase/storage";
-import { auth, firestore as db } from "../config/firebase";
-import { collection, getDocs, getDoc, addDoc, arrayUnion, updateDoc, deleteDoc, doc, setDoc, serverTimestamp, ref } from "firebase/firestore";
 import { updateProfile } from "firebase/auth";
+import { collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { auth, firestore as db, storage } from "../config/firebase";
 
 // Create User
-
 export const createUserAsync = async(creds) => {
     try {
         const user = {
@@ -21,7 +20,6 @@ export const createUserAsync = async(creds) => {
 }
 
 // Update User
-
 export const updateUserAsync = async(updatedUser, profileImage) => {
     try {
         const creds = auth.currentUser;
@@ -38,7 +36,7 @@ export const updateUserAsync = async(updatedUser, profileImage) => {
                 })
             }
         }
-        await updateDoc(userDoc, updateUser);
+        await updateDoc(userDoc, updatedUser);
         const snapshot = await getDoc(userDoc);
         return getSnapshotData(snapshot);
     } catch (error) {
@@ -58,11 +56,12 @@ export const deleteUserAsync = async(id) => {
 }
 
 // Get All Users
-export const getUsersAsync = async() => {
+export const getUsersAsync = async(user) => {
     if (!user) return;
     try {
-        const snapshot = await getDocs(query(collection(db, "users"), where("username", "!=", user.username)));
-        const users = snapshots.docs.map((item) => getSnapshotData(item));
+        const snapshots = await getDocs(query(collection(db, "users"), where("username", "!=", user.username)));
+        const users = snapshots.docs.map(item => getSnapshotData(item));
+        return users;
     } catch (error) {
         console.log(error);
     }
@@ -80,7 +79,6 @@ export const getUserAsync = async(id) => {
 }
 
 // Helper functions
-
 const uploadFiles = async(files, location) => {
     let filesUrls = [];
     for (const item of files) {

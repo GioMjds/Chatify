@@ -1,5 +1,6 @@
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile } from "firebase/auth";
 import { auth } from "../config/firebase";
+import { createUserAsync } from "./chatServices";
 
 // Login
 export const loginAsync = async(creds) => {
@@ -27,4 +28,4 @@ export const registerAsync = async(creds) => {
 // Log out
 export const logoutAsync = async() => {
     return await signOut(auth);
-}
+};

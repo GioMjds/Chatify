@@ -1,5 +1,6 @@
-import "../assets/css/register.css";
 import { useRef, useState } from "react";
+import "../assets/css/register.css";
+import { registerAsync } from "../services/authServices";
 
 export default function Register() {
   const emailRef = useRef();
@@ -21,8 +22,9 @@ export default function Register() {
     }
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
+
     setLoading(true);
 
     const creds = {
@@ -31,10 +33,17 @@ export default function Register() {
       password: passRef.current.value
     };
 
-    console.log("register", creds);
-    clearInputs();
-    setLoading(false);
+    try {
+      await registerAsync(creds);
+      clearInputs();
+      setLoading(false);
+    } catch (error) {
+      const message = error.code;
+      setError(message);
+      setLoading(false);
+    }
   }
+
   return (
     <div className="register">
       <div className="wrapper">
