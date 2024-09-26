@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../assets/css/register.css";
 import { registerAsync } from "../services/authServices";
-import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const emailRef = useRef();

@@ -1,5 +1,7 @@
 import { useRef, useState } from "react";
 import "../assets/css/login.css";
+import { loginAsync } from "../services/authServices";
+import { getUserAsync } from "../services/chatServices";
 
 export default function Login() {
   const emailRef = useRef();
@@ -17,18 +19,29 @@ export default function Login() {
     }
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     const creds = {
       email: emailRef.current.value,
-      password: passRef.current.value
+      password: passRef.current.value,
     };
 
-    console.log("login", creds);
-    clearInputs();
-    setLoading(false);
+    try {
+      const res = await loginAsync(creds);
+      if (res?.user) {
+        console.log("auth user: ", res.user);
+        const currentUser = await getUserAsync(res.user.uid);
+        console.log("firestore user: ", currentUser);
+        clearInputs();
+        setLoading(false);
+      }
+    } catch (error) {
+      const message = error.code;
+      setError(message);
+      setLoading(false);
+    }
   }
   return (
     <div className="login">
