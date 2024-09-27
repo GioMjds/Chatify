@@ -1,17 +1,21 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "../assets/css/sidebar.css";
-import { logoutAsync } from "../services/authServices";
 import Avatar from "./Avatar";
 import ChatItem from "./ChatItem";
 import ContactItem from "./ContactItem";
 import Profile from "./Profile";
+import { logoutAsync } from "../services/authServices";
+import { Context } from "../context/Context";
+import { signOut } from "../context/Actions";
 
 export default function Sidebar({ setChat }) {
+  const { dispatch } = useContext(Context);
   const [newChat, setNewChat] = useState(false);
   const [onProfile, setOnProfile] = useState(false);
 
   const handleLogout = async() => {
     await logoutAsync();
+    dispatch(signOut());
   }
   
   return (

@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "../assets/css/profile.css";
+import { Context } from "../context/Context";
 import Avatar from "./Avatar";
 
 export default function Profile({ open, setOpen }) {
+    const { auth, user, dispatch } = useContext(Context);
     const [onEdit, setOnEdit] = useState(false);
+
+    console.log(user, auth);
     return (
     <div className={open ? "profile active" : "profile"}>
         <div className="profile-wrapper">
@@ -36,11 +40,15 @@ export default function Profile({ open, setOpen }) {
         ) : (
             <div className="profile-infos">
                 <div className="avatar-wrapper">
-                    <Avatar height={150} width={150} />
+                    <Avatar
+                        src={user?.profile? user.profile.url : ""}
+                        height={150}
+                        width={150}
+                    />
                 </div>
-                <span className="username">Gio Majadas</span>
-                <span className="email">giomjds@gmail.com</span>
-                <p className="status">sample description</p>
+                <span className="username">{user?.username}</span>
+                <span className="email">{user?.email}</span>
+                <p className="status">{user?.desc}</p>
                 <button className="edit-btn" onClick={() => setOnEdit(true)} >
                     <i className="fa-solid fa-pen-to-square"></i>Profile
                 </button>

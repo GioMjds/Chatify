@@ -12,7 +12,6 @@ export const registerAsync = async (creds) => {
     try {
         const res = await createUserWithEmailAndPassword(auth, creds.email, creds.password);
         if (res.user) {
-            console.log(res.user)
             await updateProfile(res.user, { displayName: creds.username });
             await createUserAsync({...creds, uid: res.user.uid});
         }

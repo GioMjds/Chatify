@@ -35,9 +35,11 @@ export default function Login() {
       const res = await loginAsync(creds);
       if (res?.user) {
         const currentUser = await getUserAsync(res.user.uid);
-        dispatch(signIn({auth: res.user, user: currentUser}));
-        clearInputs();
-        setLoading(false);
+        if (currentUser) {
+          dispatch(signIn({auth: res.user, user: currentUser}));
+          clearInputs();
+          setLoading(false);
+        }
       }
     } catch (error) {
       const message = error.code;
