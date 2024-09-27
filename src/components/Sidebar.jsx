@@ -7,9 +7,9 @@ import Profile from "./Profile";
 import { logoutAsync } from "../services/authServices";
 import { Context } from "../context/Context";
 import { signOut } from "../context/Actions";
-import { getUserAsync, getUsersAsync } from "../services/chatServices";
+import { getUsersAsync } from "../services/chatServices";
 
-export default function Sidebar({ setChat }) {
+const Sidebar = ({ setChat }) => {
   const { auth, dispatch } = useContext(Context);
   const [newChat, setNewChat] = useState(false);
   const [onProfile, setOnProfile] = useState(false);
@@ -26,7 +26,7 @@ export default function Sidebar({ setChat }) {
     };
 
     getUsers();
-  }, []);
+  }, [auth]);
 
   const handleLogout = async() => {
     await logoutAsync();
@@ -64,7 +64,7 @@ export default function Sidebar({ setChat }) {
           <div className="center-wrapper">
             {newChat ? (
               <div className="items-wrapper">
-                {contacts.map((contact, index) => (
+                {contacts.map((contact) => (
                   <ContactItem contact={contact} key={contact?.id} />
                 ))}
               </div>
@@ -86,3 +86,5 @@ export default function Sidebar({ setChat }) {
     </div>
   );
 }
+
+export default Sidebar

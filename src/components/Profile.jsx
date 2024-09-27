@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
+import { v4 as getID } from "uuid";
 import "../assets/css/profile.css";
-import { Context } from "../context/Context";
-import Avatar from "./Avatar";
-import {v4 as getID} from "uuid";
-import { updateUserAsync } from "../services/chatServices";
 import { updateProfile } from "../context/Actions";
+import { Context } from "../context/Context";
+import { updateUserAsync } from "../services/chatServices";
+import Avatar from "./Avatar";
 
 export default function Profile({ open, setOpen }) {
     const { auth, user, dispatch } = useContext(Context);
@@ -12,6 +12,7 @@ export default function Profile({ open, setOpen }) {
     const [username, setUsername] = useState("");
     const [desc, setDesc] = useState("");
     const [profileImage, setProfileImage] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const handleOnEdit = () => {
         if (!user) return;
@@ -37,6 +38,7 @@ export default function Profile({ open, setOpen }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const tempUser = {
                 username,
@@ -48,8 +50,10 @@ export default function Profile({ open, setOpen }) {
                 dispatch(updateProfile(res));
             }
             setOnEdit(false);
+            setLoading(false);
         } catch (error) {
             console.log(error);
+            setLoading(false);
         }
     }
 
@@ -73,7 +77,7 @@ export default function Profile({ open, setOpen }) {
                     />
                     ) : (
                     <Avatar
-                        src={user?.profile? user.profile.url : ""}
+                        src={user?.profile ? user.profile.url : ""}
                         height={150}
                         width={150}
                     />)}
@@ -106,8 +110,8 @@ export default function Profile({ open, setOpen }) {
                         <button onClick={handleCancel} className="cancel-btn">
                             Cancel
                         </button>
-                        <button type="submit" className="save-btn">
-                            Save
+                        <button disabled={loading} type="submit" className="save-btn">
+                            {loading ? "Saving..." : "Save"}
                         </button>
                     </div>
                 </form>
