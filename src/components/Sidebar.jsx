@@ -9,7 +9,7 @@ import { Context } from "../context/Context";
 import { signOut } from "../context/Actions";
 
 export default function Sidebar({ setChat }) {
-  const { dispatch } = useContext(Context);
+  const { auth, dispatch } = useContext(Context);
   const [newChat, setNewChat] = useState(false);
   const [onProfile, setOnProfile] = useState(false);
 
@@ -24,7 +24,7 @@ export default function Sidebar({ setChat }) {
       <div className="wrapper">
         <div className="top">
           <div style={{cursor: "pointer"}} onClick={() => setOnProfile(true)}>
-            <Avatar src="" height={45} width={45} />
+            <Avatar src={auth?.profile ? auth.profile : ""} height={45} width={45} />
           </div>
           {newChat && <span className="heading">Add Conversation</span>}
           <div
