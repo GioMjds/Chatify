@@ -25,6 +25,11 @@ export const Reducer = (state, action) => {
                     email: action.payload.email,
                 },
             };
+        case "LOAD_USERS":
+            return {
+                ...state,
+                users: action.payload,
+            };
         case "LOGOUT":
             return {
                 ...state,

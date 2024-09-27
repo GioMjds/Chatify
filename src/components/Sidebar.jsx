@@ -10,28 +10,35 @@ import { signOut } from "../context/Actions";
 import { getUsersAsync } from "../services/chatServices";
 
 const Sidebar = ({ setChat }) => {
-  const { auth, dispatch } = useContext(Context);
+  const { auth, users, dispatch } = useContext(Context);
   const [newChat, setNewChat] = useState(false);
   const [onProfile, setOnProfile] = useState(false);
   const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
-    const getUsers = async () => {
-      try {
-        const res = await getUsersAsync(auth);
-        setContacts(res);
-      } catch (error) {
-        console.log(error)
-      }
-    };
+    setContacts(users);
+  }, [users]);
 
-    getUsers();
-  }, [auth]);
+  const handleSearch = (e) => {
+    const toSearch = e.target.value;
+    if (newChat) {
+      // Start a new conversation
+      if (toSearch) {
+        setContacts((prev) => 
+          prev.filter((user) => 
+            user.username.toLowerCase().includes(toSearch.toLowerCase())
+          )
+        );
+      } else {
+        setContacts(users);
+      }
+    }
+  };
 
   const handleLogout = async() => {
     await logoutAsync();
     dispatch(signOut());
-  }
+  };
   
   return (
     <div className="sidebar">
@@ -54,6 +61,7 @@ const Sidebar = ({ setChat }) => {
             <div className="input-wrapper">
               <i className="fa-solid fa-magnifying-glass"></i>
               <input
+                onChange={handleSearch}
                 type="text"
                 placeholder={
                   newChat ? "Search a contact" : "Search a conversation"

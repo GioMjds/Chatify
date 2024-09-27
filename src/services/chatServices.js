@@ -58,7 +58,7 @@ export const deleteUserAsync = async(id) => {
 // Get All Users
 export const getUsersAsync = async(user) => {
     if (!user) return;
-    console.log(user);
+    // console.log(user);
     try {
         const snapshots = await getDocs(query(collection(db, "users"), where("email", "!=", user.email)));
         const users = snapshots.docs.map(item => getSnapshotData(item));

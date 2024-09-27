@@ -5,6 +5,7 @@ import { checkAuthUser } from "./Actions";
 const initState = {
     auth: JSON.parse(localStorage.getItem("chat_user")) || null,
     user: null,
+    users: [],
 }
 
 export const Context = createContext();
@@ -24,6 +25,7 @@ export const ContextProvider = ({ children }) => {
         <Context.Provider value={{
             auth: state.auth,
             user: state.user,
+            users: state.users,
             dispatch,
         }}>
             {children}
