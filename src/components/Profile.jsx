@@ -6,7 +6,7 @@ import { Context } from "../context/Context";
 import { updateUserAsync } from "../services/chatServices";
 import Avatar from "./Avatar";
 
-export default function Profile({ open, setOpen }) {
+const Profile = ({ open, setOpen }) => {
     const { auth, user, dispatch } = useContext(Context);
     const [onEdit, setOnEdit] = useState(false);
     const [username, setUsername] = useState("");
@@ -107,10 +107,18 @@ export default function Profile({ open, setOpen }) {
                         placeholder="Write something about yourself"
                     />
                     <div className="profile-actions">
-                        <button onClick={handleCancel} className="cancel-btn">
+                        <button
+                            onClick={handleCancel}
+                            className="cancel-btn"
+                        >
                             Cancel
                         </button>
-                        <button disabled={loading} type="submit" className="save-btn">
+                        <button
+                            disabled={loading}
+                            type="submit"
+                            className="save-btn"
+                            style={{ cursor: loading ? "not-allowed" : "pointer" }}
+                        >
                             {loading ? "Saving..." : "Save"}
                         </button>
                     </div>
@@ -137,3 +145,5 @@ export default function Profile({ open, setOpen }) {
     </div>
     );
 }
+
+export default Profile

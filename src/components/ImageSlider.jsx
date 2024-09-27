@@ -5,7 +5,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import "../assets/css/imageslider.css";
 
-export default function ImageSlider({images, onClose}) {
+const ImageSlider = ({images, onClose}) => {
   return (
     <div className='images-slider'>
       <div className="images-slider-close" onClick={onClose}>
@@ -30,3 +30,5 @@ export default function ImageSlider({images, onClose}) {
     </div>
   )
 }
+
+export default ImageSlider

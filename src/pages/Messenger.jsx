@@ -3,7 +3,7 @@ import "../assets/css/messenger.css";
 import Content from "../components/Content";
 import Sidebar from "../components/Sidebar";
 
-export default function Messenger() {
+const Messenger = () => {
   const [chat, setChat] = useState(false);
   return (
     <div className="messenger">
@@ -12,3 +12,5 @@ export default function Messenger() {
     </div>
   )
 }
+
+export default Messenger

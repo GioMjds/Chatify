@@ -1,7 +1,7 @@
 import React from 'react'
 import Avatar from './Avatar'
 
-export default function ContactItem({contact}) {
+const ContactItem = ({contact}) => {
   return (
     <div className='contact-item'>
       <Avatar
@@ -13,3 +13,5 @@ export default function ContactItem({contact}) {
     </div>
   )
 }
+
+export default ContactItem

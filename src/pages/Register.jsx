@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../assets/css/register.css";
 import { registerAsync } from "../services/authServices";
 
-export default function Register() {
+const Register = () => {
   const emailRef = useRef();
   const nameRef = useRef();
   const passRef = useRef();
@@ -69,3 +69,5 @@ export default function Register() {
     </div>
   )
 }
+
+export default Register

@@ -1,7 +1,7 @@
 import React from 'react'
 import Avatar from './Avatar'
 
-export default function ChatItem({setChat}) {
+const ChatItem = ({setChat}) => {
   return (
     <div className='chat-item' onClick={() => setChat(true)}>
       <Avatar src="" height={55} width={55} />
@@ -15,3 +15,5 @@ export default function ChatItem({setChat}) {
     </div>
   )
 }
+
+export default ChatItem

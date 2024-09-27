@@ -6,7 +6,7 @@ import ImageSlider from "./ImageSlider";
 import InfoContainer from "./InfoContainer";
 import Message from "./Message";
 
-export default function Content({chat, setChat}) {
+const Content = ({chat, setChat}) => {
   const [onMenu, setOnMenu] = useState(false);
   const [onViewer, setOnViewer] = useState(false);
   const [messages, setMessages] = useState(SeedMessages);
@@ -81,3 +81,5 @@ export default function Content({chat, setChat}) {
     </div>
   )
 }
+
+export default Content

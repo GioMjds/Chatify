@@ -5,7 +5,7 @@ import { getUserAsync } from "../services/chatServices";
 import { signIn } from "../context/Actions";
 import { Context } from "../context/Context";
 
-export default function Login() {
+const Login = () => {
   const { dispatch } = useContext(Context);
   const emailRef = useRef();
   const passRef = useRef();
@@ -76,3 +76,5 @@ export default function Login() {
     </div>
   )
 }
+
+export default Login

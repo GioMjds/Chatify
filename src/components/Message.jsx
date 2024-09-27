@@ -1,6 +1,6 @@
 import "../assets/css/message.css";
 
-export default function Message({ owner, msg, openImageViewer }) {
+const Message = ({ owner, msg, openImageViewer }) => {
   return (
     <div className={owner ? "message owner" : "message"}>
         <div className="message-wrapper">
@@ -18,3 +18,5 @@ export default function Message({ owner, msg, openImageViewer }) {
     </div>
   );
 }
+
+export default Message

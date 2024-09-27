@@ -1,6 +1,6 @@
 import NoAvatar from "../assets/images/noavatar.png";
 
-export default function Avatar({ src, username, height, width }) {
+const Avatar = ({ src, username, height, width }) => {
   return (
     <div className='d-flex-row'>
       <img src={src ? src : NoAvatar} alt="" style={{
@@ -17,3 +17,5 @@ export default function Avatar({ src, username, height, width }) {
     </div>
   )
 }
+
+export default Avatar

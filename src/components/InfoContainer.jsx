@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function InfoContainer() {
+const InfoContainer = () => {
   return (
     <div className="infos-wrapper">
       <div className="infos">
@@ -11,3 +11,5 @@ export default function InfoContainer() {
     </div>
   )
 }
+
+export default InfoContainer

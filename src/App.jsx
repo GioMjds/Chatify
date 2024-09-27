@@ -5,7 +5,7 @@ import Register from "./pages/Register";
 import { useContext } from "react";
 import { Context } from "./context/Context";
 
-export default function App() {
+const App = () => {
   const {auth} = useContext(Context);
   return (
     <BrowserRouter>
@@ -18,3 +18,5 @@ export default function App() {
     </BrowserRouter>
   )
 }
+
+export default App
