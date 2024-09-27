@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "../assets/css/sidebar.css";
 import Avatar from "./Avatar";
 import ChatItem from "./ChatItem";
@@ -7,11 +7,26 @@ import Profile from "./Profile";
 import { logoutAsync } from "../services/authServices";
 import { Context } from "../context/Context";
 import { signOut } from "../context/Actions";
+import { getUserAsync, getUsersAsync } from "../services/chatServices";
 
 export default function Sidebar({ setChat }) {
   const { auth, dispatch } = useContext(Context);
   const [newChat, setNewChat] = useState(false);
   const [onProfile, setOnProfile] = useState(false);
+  const [contacts, setContacts] = useState([]);
+
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const res = await getUsersAsync(auth);
+        setContacts(res);
+      } catch (error) {
+        console.log(error)
+      }
+    };
+
+    getUsers();
+  }, []);
 
   const handleLogout = async() => {
     await logoutAsync();
@@ -49,8 +64,8 @@ export default function Sidebar({ setChat }) {
           <div className="center-wrapper">
             {newChat ? (
               <div className="items-wrapper">
-                {[...Array(50)].map((contact, index) => (
-                  <ContactItem key={index} />
+                {contacts.map((contact, index) => (
+                  <ContactItem contact={contact} key={contact?.id} />
                 ))}
               </div>
             ) : (
