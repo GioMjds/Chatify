@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "../assets/css/sidebar.css";
+import { useNavigate } from "react-router-dom";
 import Avatar from "./Avatar";
 import ChatItem from "./ChatItem";
 import ContactItem from "./ContactItem";
@@ -8,6 +9,7 @@ import Profile from "./Profile";
 export default function Sidebar({ setChat }) {
   const [newChat, setNewChat] = useState(false);
   const [onProfile, setOnProfile] = useState(false);
+  const navigate = useNavigate();
 
   console.log(onProfile);
   return (
@@ -55,7 +57,7 @@ export default function Sidebar({ setChat }) {
           </div>
         </div>
         <div className="bottom">
-          <button className="logout-btn">
+          <button className="logout-btn" onClick={() => navigate('/login')}>
             <i className="fa-solid fa-power-off"></i>Logout
           </button>
         </div>

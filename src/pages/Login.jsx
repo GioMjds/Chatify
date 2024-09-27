@@ -6,13 +6,13 @@ import { getUserAsync } from "../services/chatServices";
 export default function Login() {
   const emailRef = useRef();
   const passRef = useRef();
-
+  
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const clearInputs = () => {
     if (emailRef?.current) {
-      emailRef.current.value = "";
+      emailRef.current.value = ""; 
     }
     if (passRef?.current) {
       passRef.current.value = "";
