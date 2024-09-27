@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "../assets/css/sidebar.css";
-import { useNavigate } from "react-router-dom";
+import { logoutAsync } from "../services/authServices";
 import Avatar from "./Avatar";
 import ChatItem from "./ChatItem";
 import ContactItem from "./ContactItem";
@@ -9,9 +9,11 @@ import Profile from "./Profile";
 export default function Sidebar({ setChat }) {
   const [newChat, setNewChat] = useState(false);
   const [onProfile, setOnProfile] = useState(false);
-  const navigate = useNavigate();
 
-  console.log(onProfile);
+  const handleLogout = async() => {
+    await logoutAsync();
+  }
+  
   return (
     <div className="sidebar">
       <Profile open={onProfile} setOpen={setOnProfile} />
@@ -57,7 +59,7 @@ export default function Sidebar({ setChat }) {
           </div>
         </div>
         <div className="bottom">
-          <button className="logout-btn" onClick={() => navigate('/login')}>
+          <button className="logout-btn" onClick={handleLogout}>
             <i className="fa-solid fa-power-off"></i>Logout
           </button>
         </div>

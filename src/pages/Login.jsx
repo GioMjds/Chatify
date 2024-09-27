@@ -1,12 +1,15 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import "../assets/css/login.css";
 import { loginAsync } from "../services/authServices";
 import { getUserAsync } from "../services/chatServices";
+import { signIn } from "../context/Actions";
+import { Context } from "../context/Context";
 
 export default function Login() {
+  const { dispatch } = useContext(Context);
   const emailRef = useRef();
   const passRef = useRef();
-  
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -31,9 +34,8 @@ export default function Login() {
     try {
       const res = await loginAsync(creds);
       if (res?.user) {
-        console.log("auth user: ", res.user);
         const currentUser = await getUserAsync(res.user.uid);
-        console.log("firestore user: ", currentUser);
+        dispatch(signIn({auth: res.user, user: currentUser}));
         clearInputs();
         setLoading(false);
       }
