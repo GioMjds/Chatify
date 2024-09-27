@@ -1,9 +1,12 @@
 import React from 'react'
 import Avatar from './Avatar'
 
-const ContactItem = ({contact}) => {
+const ContactItem = ({ contact, createConversation }) => {
   return (
-    <div className='contact-item'>
+    <div
+      onClick={() => createConversation(contact?.id)}
+      className='contact-item'
+    >
       <Avatar
         src={contact?.profile ? contact.profile.url : ""}
         height={55}

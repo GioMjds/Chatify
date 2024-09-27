@@ -1,19 +1,20 @@
 import { useContext, useEffect, useState } from "react";
 import "../assets/css/sidebar.css";
+import { signOut } from "../context/Actions";
+import { Context } from "../context/Context";
+import { logoutAsync } from "../services/authServices";
 import Avatar from "./Avatar";
 import ChatItem from "./ChatItem";
 import ContactItem from "./ContactItem";
 import Profile from "./Profile";
-import { logoutAsync } from "../services/authServices";
-import { Context } from "../context/Context";
-import { signOut } from "../context/Actions";
-import { getUsersAsync } from "../services/chatServices";
+import { createConversationAsync } from "../services/chatServices";
 
 const Sidebar = ({ setChat }) => {
   const { auth, users, dispatch } = useContext(Context);
   const [newChat, setNewChat] = useState(false);
   const [onProfile, setOnProfile] = useState(false);
   const [contacts, setContacts] = useState([]);
+  const [conversations, setConversations] = useState([]);
 
   useEffect(() => {
     setContacts(users);
@@ -35,6 +36,17 @@ const Sidebar = ({ setChat }) => {
     }
   };
 
+  const handleCreateConversation = async (friendId) => {
+    if (auth == null) return;
+    // Check if conversation exists
+    // We create first a conversation
+    const res = await createConversationAsync(auth.id, friendId);
+    if (res) {
+      setConversations((prev) => [...prev, res]);
+      setNewChat(false);
+    }
+  };
+  
   const handleLogout = async() => {
     await logoutAsync();
     dispatch(signOut());
@@ -73,7 +85,11 @@ const Sidebar = ({ setChat }) => {
             {newChat ? (
               <div className="items-wrapper">
                 {contacts.map((contact) => (
-                  <ContactItem contact={contact} key={contact?.id} />
+                  <ContactItem
+                    createConversation={handleCreateConversation}
+                    contact={contact}
+                    key={contact?.id}
+                  />
                 ))}
               </div>
             ) : (
