@@ -88,7 +88,6 @@ const Content = ({ setChat }) => {
       }
       const res = await createMessageAsync(msg, images);
       if (res) {
-        // This will clear the inputs if success
         setMessage("");
         setImages([]);
       }

@@ -51,8 +51,7 @@ const Profile = ({ open, setOpen }) => {
             }
             setOnEdit(false);
             setLoading(false);
-        } catch (error) {
-            console.log(error);
+        } catch {
             setLoading(false);
         }
     }

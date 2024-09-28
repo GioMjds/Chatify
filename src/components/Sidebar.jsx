@@ -29,7 +29,6 @@ const Sidebar = () => {
   const handleSearch = (e) => {
     const toSearch = e.target.value;
     if (newChat) {
-      // Start a new conversation
       if (toSearch) {
         setContacts(users.filter((user) =>
           user.username.toLowerCase().includes(toSearch.toLowerCase())
@@ -38,7 +37,6 @@ const Sidebar = () => {
         setContacts(users);
       }
     } else {
-      // Search conversations
       if (toSearch) {
         setConversations(
           chats.filter((chat) =>
@@ -100,7 +98,7 @@ const Sidebar = () => {
   const handleSelectConversation = (conv) => {
     dispatch({ type: "SET_CURRENT_CHAT", payload: conv });
     localStorage.setItem("convId", JSON.stringify(conv.id));
-  }
+  };
   
   const handleLogout = async() => {
     await logoutAsync();
