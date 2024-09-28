@@ -1,5 +1,5 @@
 import { onSnapshot } from "firebase/firestore";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { v4 as getID } from "uuid";
 import "../assets/css/content.css";
 import { Context } from "../context/Context";
@@ -10,7 +10,7 @@ import InfoContainer from "./InfoContainer";
 import Message from "./Message";
 
 const Content = ({ setChat }) => {
-  const { currentChat, auth } = useContext(Context);
+  const { currentChat, auth, dispatch } = useContext(Context);
   const friend = currentChat?.friend;
   const [onMenu, setOnMenu] = useState(false);
   const [onViewer, setOnViewer] = useState(false);
@@ -18,6 +18,12 @@ const Content = ({ setChat }) => {
   const [images, setImages] = useState([]);
   const [message, setMessage] = useState("");
   const [msgImages, setMsgImages] = useState([]);
+
+  const scrollRef = useRef();
+
+  useEffect(() => {
+    return scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   useEffect(() => {
     const loadMessages = async () => {
@@ -34,7 +40,7 @@ const Content = ({ setChat }) => {
       } catch (error) {
         console.log(error)
       }
-    }
+    };
     loadMessages();
   }, [currentChat]);
 
@@ -89,6 +95,11 @@ const Content = ({ setChat }) => {
     } catch (error) {
       console.log(error)
     }
+  };
+
+  const handleCloseChat = () => {
+    dispatch({ type: "SET_CURRENT_CHAT", payload: null });
+    localStorage.setItem("convId", null);
   }
 
   useEffect(() => {
@@ -111,7 +122,11 @@ const Content = ({ setChat }) => {
           <div className="app-icon menu-icon" onClick={() => setOnMenu(prev => !prev)}>
             <i className="fa-solid fa-ellipsis"></i>
             {onMenu && (<div className="menu-wrapper">
-              <span className="menu-item" onClick={() => setChat(false)}>Close Chat</span>
+              <span
+                className="menu-item"
+                onClick={handleCloseChat}>
+                  Close Chat
+              </span>
               <span className="menu-item">Delete Messages</span>
               <span className="menu-item">Delete Chat</span>
             </div>)}
@@ -124,12 +139,13 @@ const Content = ({ setChat }) => {
             </div>
           ) : (
             <div className="messages-wrapper">
-              {messages.map((msg) => (
+              {messages.map((msg, index) => (
                 <Message
                   key={msg?.id}
                   msg={msg}
                   owner={msg?.sender == auth?.id}
                   openImageViewer={openImageViewer}
+                  scrollRef={messages.length - 1 == index ? scrollRef: null}
                 />
               ))}
             </div>
@@ -159,7 +175,8 @@ const Content = ({ setChat }) => {
             <i className="fa-solid fa-image"></i>
             </label>
           </div>
-          <textarea
+          <input
+            type="text"
             value={message}
             onKeyDown={e => {
               if (e.key === 'Enter') {
