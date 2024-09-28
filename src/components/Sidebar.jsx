@@ -1,56 +1,119 @@
+import { onSnapshot } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import "../assets/css/sidebar.css";
 import { signOut } from "../context/Actions";
 import { Context } from "../context/Context";
 import { logoutAsync } from "../services/authServices";
+import { createConversationAsync, getConversationsQueryByUser, getSnapshotData } from "../services/chatServices";
 import Avatar from "./Avatar";
 import ChatItem from "./ChatItem";
 import ContactItem from "./ContactItem";
 import Profile from "./Profile";
-import { createConversationAsync } from "../services/chatServices";
 
 const Sidebar = ({ setChat }) => {
-  const { auth, users, dispatch } = useContext(Context);
+  const { auth, users, dispatch, chats, currentChat } = useContext(Context);
   const [newChat, setNewChat] = useState(false);
   const [onProfile, setOnProfile] = useState(false);
   const [contacts, setContacts] = useState([]);
   const [conversations, setConversations] = useState([]);
+  
+  useEffect(() => {
+    users && setContacts(users);
+    chats && setConversations(chats);
+  }, [users, chats]);
 
   useEffect(() => {
-    setContacts(users);
-  }, [users]);
+    loadConversations();
+  }, [auth, users]);
+
+  console.log(conversations);
 
   const handleSearch = (e) => {
     const toSearch = e.target.value;
     if (newChat) {
       // Start a new conversation
       if (toSearch) {
-        setContacts((prev) => 
-          prev.filter((user) => 
-            user.username.toLowerCase().includes(toSearch.toLowerCase())
-          )
-        );
+        setContacts(users.filter((user) =>
+        user.username.toLowerCase().includes(toSearch.toLowerCase())
+        ))
       } else {
         setContacts(users);
       }
+    } else {
+      // Search conversations
+      if (toSearch) {
+        setConversations(
+          chats.filter((chat) =>
+            chat.friend.username.toLowerCase().includes(toSearch.toLowerCase())
+          )
+        );
+      } else {
+        setConversations(chats);
+      }
     }
+  };
+
+  const loadConversations = () => {
+    if (auth == null || users.length == 0) return;
+    const query = getConversationsQueryByUser(auth.id);
+    onSnapshot(query, (snapsnots) => {
+      const tmpConversations = [];
+      snapsnots.forEach(snapshot => {
+        const conv = getSnapshotData(snapshot);
+        const friendId = conv.members.find(id => id !== auth.id);
+        const friend = users.find((contact) => contact.id === friendId);
+        if (friend) {
+          tmpConversations.push({
+            ...conv,
+            friend: {
+              id: friendId,
+              username: friend?.username,
+              profile: friend?.profile ? friend.profile.url : "",
+            },
+          });
+        }
+      });
+      dispatch({ type: "LOAD_CHATS", payload: tmpConversations });
+      const convId = JSON.parse(localStorage.getItem("convId"));
+      if (convId) {
+        const currChat = tmpConversations.find(c => c.id === convId);
+        dispatch({ type: "SET_CURRENT_CHAT", payload: currChat });
+      }
+      // setConversations(tmpConversations);
+    });
   };
 
   const handleCreateConversation = async (friendId) => {
     if (auth == null) return;
     // Check if conversation exists
-    // We create first a conversation
-    const res = await createConversationAsync(auth.id, friendId);
-    if (res) {
-      setConversations((prev) => [...prev, res]);
+    console.log(friendId);
+    const conv = conversations.find(c => c.friend.id === friendId);
+    if (conv) {
+      // Set conv als current conversation
+      dispatch({ type: "SET_CURRENT_CHAT", payload: conv });
+      localStorage.setItem("convId", JSON.stringify(conv.id));
       setNewChat(false);
+    } else {
+      // Let's create first an conversation
+      const res = await createConversationAsync(auth.id, friendId);
+      if (res) {
+        localStorage.setItem("convId", JSON.stringify(res.id));
+        setNewChat(false);
+      }
     }
   };
+
+  const handleSelectConversation = (conv) => {
+    dispatch({ type: "SET_CURRENT_CHAT", payload: conv });
+    localStorage.setItem("convId", JSON.stringify(conv.id));
+  }
   
   const handleLogout = async() => {
     await logoutAsync();
     dispatch(signOut());
   };
+
+  console.log(currentChat);
   
   return (
     <div className="sidebar">
@@ -94,8 +157,13 @@ const Sidebar = ({ setChat }) => {
               </div>
             ) : (
               <div className="items-wrapper">
-                {[...Array(50)].map((chat, index) => (
-                  <ChatItem setChat={setChat} key={index} />
+                {conversations.map((chat) => (
+                  <ChatItem
+                    chat={chat}
+                    active={chat?.id == currentChat?.id}
+                    selectConversation={handleSelectConversation}
+                    key={chat?.id}
+                  />
                 ))}
               </div>
             )}

@@ -30,6 +30,16 @@ export const Reducer = (state, action) => {
                 ...state,
                 users: action.payload,
             };
+        case "LOAD_CHATS":
+            return {
+                ...state,
+                chats: action.payload,
+            };
+        case "SET_CURRENT_CHAT":
+            return {
+                ...state,
+                currentChat: action.payload,
+            };
         case "LOGOUT":
             return {
                 ...state,

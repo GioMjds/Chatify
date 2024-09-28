@@ -6,7 +6,9 @@ const initState = {
     auth: JSON.parse(localStorage.getItem("chat_user")) || null,
     user: null,
     users: [],
-}
+    currentChat: null,
+    chats: [],
+};
 
 export const Context = createContext();
 
@@ -26,6 +28,8 @@ export const ContextProvider = ({ children }) => {
             auth: state.auth,
             user: state.user,
             users: state.users,
+            currentChat: state.currentChat,
+            chats: state.chats,
             dispatch,
         }}>
             {children}

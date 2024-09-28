@@ -121,7 +121,7 @@ export const createConversationAsync = async(userId, friendId) => {
     };
 };
 
-export const getUserConversationsQueryByUser = (userId) => {
+export const getConversationsQueryByUser = (userId) => {
     return query(
         collection(db, "conversations"),
         where("members", "array-contains", userId)
