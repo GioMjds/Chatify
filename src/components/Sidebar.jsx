@@ -10,7 +10,7 @@ import ChatItem from "./ChatItem";
 import ContactItem from "./ContactItem";
 import Profile from "./Profile";
 
-const Sidebar = ({ setChat }) => {
+const Sidebar = () => {
   const { auth, users, dispatch, chats, currentChat } = useContext(Context);
   const [newChat, setNewChat] = useState(false);
   const [onProfile, setOnProfile] = useState(false);
@@ -112,8 +112,6 @@ const Sidebar = ({ setChat }) => {
     await logoutAsync();
     dispatch(signOut());
   };
-
-  console.log(currentChat);
   
   return (
     <div className="sidebar">
