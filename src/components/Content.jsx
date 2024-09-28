@@ -1,4 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from "react";
+import { v4 as getID } from "uuid";
 import "../assets/css/content.css";
 import { Context } from "../context/Context";
 import { SeedMessages } from "../data/Messages";
@@ -6,10 +7,10 @@ import Avatar from "./Avatar";
 import ImageSlider from "./ImageSlider";
 import InfoContainer from "./InfoContainer";
 import Message from "./Message";
-import { v4 as getID } from "uuid";
+import { createMessageAsync } from "../services/chatServices";
 
 const Content = ({ setChat }) => {
-  const { currentChat } = useContext(Context);
+  const { currentChat, auth } = useContext(Context);
   const friend = currentChat?.friend;
   const [onMenu, setOnMenu] = useState(false);
   const [onViewer, setOnViewer] = useState(false);
@@ -46,6 +47,29 @@ const Content = ({ setChat }) => {
 
   const handleRemoveImage = (id) => {
     setImages((prev) => prev.filter((image) => image.id !== id));
+  };
+
+  const handleCreateMessage = async () => {
+    if (currentChat == null) return;
+    if (!message && images?.length == 0) return;
+
+    try {
+      const msg = {
+        conversationId: currentChat.id,
+        sender: auth.id,
+        receiver: currentChat.friend.id,
+        message,
+        images: [],
+      }
+      const res = await createMessageAsync(msg, images);
+      if (res) {
+        console.log(res);
+      }
+      setMessage("");
+      setImages([]);
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   console.log(images);
@@ -117,8 +141,13 @@ const Content = ({ setChat }) => {
             <i className="fa-solid fa-image"></i>
             </label>
           </div>
-          <textarea value={message} onChange={e => setMessage(e.target.value)} placeholder="Write a message" />
-          <div className="app-icon">
+          <input
+            type="text"
+            value={message}
+            onChange={e => setMessage(e.target.value)}
+            placeholder="Write a message"
+          />
+          <div className="app-icon" onClick={handleCreateMessage} >
             <i className="fa-solid fa-paper-plane"></i>
           </div>
         </div>
