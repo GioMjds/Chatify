@@ -29,13 +29,14 @@ const Content = ({ setChat }) => {
           snapshots.forEach(snapshot => {
             tmpMessages.push(getSnapshotData(snapshot))
           });
-          setMessages(tmpMessages);
+          setMessages(tmpMessages.sort((a, b) => a.createdAt - b.createdAt));
         })
       } catch (error) {
         console.log(error)
       }
     }
-  })
+    loadMessages();
+  }, [currentChat]);
 
   const openImageViewer = (images) => {
     setMsgImages(images);
@@ -81,16 +82,14 @@ const Content = ({ setChat }) => {
       }
       const res = await createMessageAsync(msg, images);
       if (res) {
-        setMessages(res);
+        // This will clear the inputs if success
+        setMessage("");
+        setImages([]);
       }
-      setMessage("");
-      setImages([]);
     } catch (error) {
       console.log(error)
     }
   }
-
-  console.log(images);
 
   useEffect(() => {
     const keyDown = (event) => {
@@ -129,11 +128,12 @@ const Content = ({ setChat }) => {
                 <Message
                   key={msg?.id}
                   msg={msg}
-                  owner={msg?.owner}
+                  owner={msg?.sender == auth?.id}
                   openImageViewer={openImageViewer}
                 />
               ))}
-            </div>)}
+            </div>
+          )}
         </div>
         <div className="bottom">
           {images.length > 0 && (
@@ -159,8 +159,7 @@ const Content = ({ setChat }) => {
             <i className="fa-solid fa-image"></i>
             </label>
           </div>
-          <input
-            type="text"
+          <textarea
             value={message}
             onKeyDown={e => {
               if (e.key === 'Enter') {

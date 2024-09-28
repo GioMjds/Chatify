@@ -155,8 +155,7 @@ export const createMessageAsync = async (message, images) => {
 export const getMsgQueryByConversationId = (convId) => {
     return query(
         collection(db, "messages"),
-        where("conversationId", "==", convId),
-        orderBy("createdAt", "asc")
+        where("conversationId", "==", convId)
     );
 };
 

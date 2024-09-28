@@ -1,9 +1,21 @@
 import React from 'react'
 import Avatar from './Avatar'
+import { format } from "timeago.js";
 
 const ChatItem = ({ chat, active, selectConversation }) => {
+
+  let lastMessage = "";
+  if (chat?.last?.createdAt) {
+    lastMessage = chat?.last?.message ? chat.last.message : "...";
+  } else {
+    lastMessage = `You: Say hi! to ${chat?.friend?.username}`;
+  }
+
   return (
-    <div className={active ? "chat-item active" : "chat-item"} onClick={() => selectConversation(chat)}>
+    <div
+      className={active ? "chat-item active" : "chat-item"}
+      onClick={() => selectConversation(chat)}
+    >
       <Avatar
         src={chat?.friend?.profile ? chat.friend.profile : ""}
         height={55}
@@ -12,9 +24,13 @@ const ChatItem = ({ chat, active, selectConversation }) => {
       <div className='chat-item-infos'>
         <div className="avatar-infos">
           <span className="username">{chat?.friend?.username}</span>
-          <span className="timeline">2 days ago</span>
+          {chat?.last?.createdAt && (
+            <span className="timeline">
+              {format(chat?.last?.createdAt?.toDate())}
+            </span>
+          )}
         </div>
-        <p className="last-message">Say hi! to Mimic</p>
+        <p className="last-message">{lastMessage}</p>
       </div>
     </div>
   )
