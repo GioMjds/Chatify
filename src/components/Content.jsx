@@ -15,6 +15,7 @@ const Content = ({ setChat }) => {
   const [onViewer, setOnViewer] = useState(false);
   const [messages, setMessages] = useState(SeedMessages);
   const [images, setImages] = useState([]);
+  const [message, setMessage] = useState("");
   const [msgImages, setMsgImages] = useState([]);
 
   const openImageViewer = (images) => {
@@ -30,7 +31,6 @@ const Content = ({ setChat }) => {
   const handleImages = (e) => {
     const files = e.target.files;
     if (files) {
-      const tmpImages = [];
       for (let i = 0; i < files.length; i++) {
         const id = getID();
         const img = {
@@ -39,11 +39,14 @@ const Content = ({ setChat }) => {
           filename: id + "-" + files[i].name,
           file: files[i],
         };
-        tmpImages.push(img);
+        setImages((prev) => [...prev, img]);
       }
-      setImages(tmpImages);
     }
   };
+
+  const handleRemoveImage = (id) => {
+    setImages((prev) => prev.filter((image) => image.id !== id));
+  }
 
   console.log(images);
 
@@ -96,7 +99,7 @@ const Content = ({ setChat }) => {
             {images.map((image) => (
               <div className="image-item" key={image?.id}>
                 <img src={URL.createObjectURL(image?.file)} alt=""/>
-                <i className="fa-solid fa-rectangle-xmark"></i>
+                <i onClick={() => handleRemoveImage(image.id)} className="fa-solid fa-rectangle-xmark"></i>
               </div>
             ))}
           </div>
@@ -108,13 +111,13 @@ const Content = ({ setChat }) => {
                 accept=".jpg,.jpeg,.png"
                 id="upload-images"
                 multiple
-                style={{ display: 'none', cursor: 'pointer' }}
+                style={{ display: 'none' }}
                 onChange={handleImages}
               />
             <i className="fa-solid fa-image"></i>
             </label>
           </div>
-          <textarea placeholder="Write a message" />
+          <textarea value={message} onChange={e => setMessage(e.target.value)} placeholder="Write a message" />
           <div className="app-icon">
             <i className="fa-solid fa-paper-plane"></i>
           </div>
