@@ -66,7 +66,7 @@
     color: var(--blue);
 }
 
-.content .wrapper .bottom textarea {
+.content .wrapper .bottom input[type="text"] {
     resize: none;
     padding: 0.5rem 1rem;
     font-size: 1rem;
@@ -76,9 +76,10 @@
     outline: none;
     border: none;
     background-color: var(--bg-light);
+    direction: ltr;
 }
 
-.content .wrapper .bottom textarea::placeholder {
+.content .wrapper .bottom input[type="text"]::placeholder {
     padding-top: 0.5rem;
 }
 

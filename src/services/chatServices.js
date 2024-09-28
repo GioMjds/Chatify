@@ -1,5 +1,5 @@
 import { updateProfile } from "firebase/auth";
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
+import { addDoc, arrayUnion, collection, deleteDoc, doc, getDoc, getDocs, orderBy, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { auth, firestore as db, storage } from "../config/firebase";
 
@@ -119,6 +119,45 @@ export const createConversationAsync = async(userId, friendId) => {
     } catch (error) {
         console.log(error);
     };
+};
+
+export const createMessageAsync = async (message, images) => {
+    try {
+        if (images.length > 0) {
+            const location = `/images/message/${message.conversationId}`;
+            const urls = await uploadFiles(images, location);
+            if (urls.length > 0) {
+                message.images = arrayUnion(...urls);
+            } else {
+                message.images = arrayUnion();
+            }
+        }
+        const newMessage = {
+            ...message, 
+            createdAt: serverTimestamp(),
+        };
+        const msgDoc = await addDoc(collection(db, "messages"), newMessage);
+        const messageId = msgDoc.id;
+        if (messageId) {
+            const msg_res = await getDoc(msgDoc);
+            const msg = getSnapshotData(msg_res);
+            const convDoc = doc(db, "conversations", msg.conversationId);
+            await updateDoc(convDoc, {
+                last: { message: msg.message, createdAt: msg.createdAt }
+            });
+            return msg;
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const getMsgQueryByConversationId = (convId) => {
+    return query(
+        collection(db, "messages"),
+        where("conversationId", "==", convId),
+        orderBy("createdAt", "asc")
+    );
 };
 
 export const getConversationsQueryByUser = (userId) => {

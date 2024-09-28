@@ -1,33 +1,51 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { onSnapshot } from "firebase/firestore";
+import { useContext, useEffect, useState } from "react";
 import { v4 as getID } from "uuid";
 import "../assets/css/content.css";
 import { Context } from "../context/Context";
-import { SeedMessages } from "../data/Messages";
+import { createMessageAsync, getMsgQueryByConversationId, getSnapshotData } from "../services/chatServices";
 import Avatar from "./Avatar";
 import ImageSlider from "./ImageSlider";
 import InfoContainer from "./InfoContainer";
 import Message from "./Message";
-import { createMessageAsync } from "../services/chatServices";
 
 const Content = ({ setChat }) => {
   const { currentChat, auth } = useContext(Context);
   const friend = currentChat?.friend;
   const [onMenu, setOnMenu] = useState(false);
   const [onViewer, setOnViewer] = useState(false);
-  const [messages, setMessages] = useState(SeedMessages);
+  const [messages, setMessages] = useState([]);
   const [images, setImages] = useState([]);
   const [message, setMessage] = useState("");
   const [msgImages, setMsgImages] = useState([]);
+
+  useEffect(() => {
+    const loadMessages = async () => {
+      if (currentChat == null) return;
+      try {
+        const query = getMsgQueryByConversationId(currentChat.id);
+        onSnapshot(query, snapshots => {
+          let tmpMessages = [];
+          snapshots.forEach(snapshot => {
+            tmpMessages.push(getSnapshotData(snapshot))
+          });
+          setMessages(tmpMessages);
+        })
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  })
 
   const openImageViewer = (images) => {
     setMsgImages(images);
     setOnViewer(true);
   };
 
-  const closeImageViewer = useCallback(() => {
+  const closeImageViewer = () => {
     setMsgImages([]);
     setOnViewer(false);
-  });
+  }
 
   const handleImages = (e) => {
     const files = e.target.files;
@@ -63,7 +81,7 @@ const Content = ({ setChat }) => {
       }
       const res = await createMessageAsync(msg, images);
       if (res) {
-        console.log(res);
+        setMessages(res);
       }
       setMessage("");
       setImages([]);
@@ -144,6 +162,12 @@ const Content = ({ setChat }) => {
           <input
             type="text"
             value={message}
+            onKeyDown={e => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                handleCreateMessage();
+              }
+            }}
             onChange={e => setMessage(e.target.value)}
             placeholder="Write a message"
           />
