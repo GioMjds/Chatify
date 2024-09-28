@@ -93,12 +93,12 @@ const Content = ({ setChat }) => {
         <div className="bottom">
           {images.length > 0 && (
             <div className="images-preview">
-            {images.map((image) => {
+            {images.map((image) => (
               <div className="image-item" key={image?.id}>
                 <img src={URL.createObjectURL(image?.file)} alt=""/>
                 <i className="fa-solid fa-rectangle-xmark"></i>
               </div>
-            })}
+            ))}
           </div>
         )}
           <div className="app-icon">
