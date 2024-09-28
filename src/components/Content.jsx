@@ -1,12 +1,15 @@
-import { useState, useEffect, useCallback } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import "../assets/css/content.css";
+import { Context } from "../context/Context";
 import { SeedMessages } from "../data/Messages";
 import Avatar from "./Avatar";
 import ImageSlider from "./ImageSlider";
 import InfoContainer from "./InfoContainer";
 import Message from "./Message";
 
-const Content = ({chat, setChat}) => {
+const Content = ({ setChat }) => {
+  const { currentChat } = useContext(Context);
+  const friend = currentChat?.friend;
   const [onMenu, setOnMenu] = useState(false);
   const [onViewer, setOnViewer] = useState(false);
   const [messages, setMessages] = useState(SeedMessages);
@@ -35,10 +38,10 @@ const Content = ({chat, setChat}) => {
   }, [onViewer, closeImageViewer]);
 
   return (
-    <div className={chat ? "content active" : "content"}>
-      {chat ? (<div className="wrapper">
+    <div className={currentChat ? "content active" : "content"}>
+      {currentChat ? (<div className="wrapper">
         <div className="top">
-          <Avatar username={"Mimic1"} height={45} width={45} />
+          <Avatar src={friend?.profile ? friend.profile : ""} username={friend?.username} height={45} width={45} />
           <div className="app-icon menu-icon" onClick={() => setOnMenu(prev => !prev)}>
             <i className="fa-solid fa-ellipsis"></i>
             {onMenu && (<div className="menu-wrapper">
