@@ -23,11 +23,10 @@ const Register = () => {
     if (passRef?.current) {
       passRef.current.value = "";
     }
-  }
+  };
 
   const handleSubmit = async(e) => {
     e.preventDefault();
-
     setLoading(true);
 
     const creds = {
@@ -41,13 +40,12 @@ const Register = () => {
       clearInputs();
       setLoading(false);
       navigate("/login");
-      
     } catch (error) {
       const message = error.code;
       setError(message);
       setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="register">
