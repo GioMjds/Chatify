@@ -26,15 +26,13 @@ const Sidebar = () => {
     loadConversations();
   }, [auth, users]);
 
-  console.log(conversations);
-
   const handleSearch = (e) => {
     const toSearch = e.target.value;
     if (newChat) {
       // Start a new conversation
       if (toSearch) {
         setContacts(users.filter((user) =>
-        user.username.toLowerCase().includes(toSearch.toLowerCase())
+          user.username.toLowerCase().includes(toSearch.toLowerCase())
         ))
       } else {
         setContacts(users);
@@ -79,22 +77,18 @@ const Sidebar = () => {
         const currChat = tmpConversations.find(c => c.id === convId);
         dispatch({ type: "SET_CURRENT_CHAT", payload: currChat });
       }
-      // setConversations(tmpConversations);
     });
   };
 
   const handleCreateConversation = async (friendId) => {
     if (auth == null) return;
-    // Check if conversation exists
     console.log(friendId);
     const conv = conversations.find(c => c.friend.id === friendId);
     if (conv) {
-      // Set conv als current conversation
       dispatch({ type: "SET_CURRENT_CHAT", payload: conv });
       localStorage.setItem("convId", JSON.stringify(conv.id));
       setNewChat(false);
     } else {
-      // Let's create first an conversation
       const res = await createConversationAsync(auth.id, friendId);
       if (res) {
         localStorage.setItem("convId", JSON.stringify(res.id));
