@@ -66,7 +66,7 @@
     color: var(--blue);
 }
 
-.content .wrapper .bottom textarea {
+.content .wrapper .bottom input {
     resize: none;
     padding: 0.5rem 1rem;
     font-size: 1rem;
@@ -79,7 +79,7 @@
     direction: ltr;
 }
 
-.content .wrapper .bottom textarea::placeholder {
+.content .wrapper .bottom input::placeholder {
     padding-top: 0.5rem;
 }
 
