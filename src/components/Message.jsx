@@ -1,7 +1,7 @@
 import "../assets/css/message.css";
 import { format } from "timeago.js";
 
-const Message = ({ owner, msg, openImageViewer }) => {
+const Message = ({ owner, msg, openImageViewer, scrollRef }) => {
   return (
     <div className={owner ? "message owner" : "message"}>
         <div className="message-wrapper">
@@ -18,7 +18,7 @@ const Message = ({ owner, msg, openImageViewer }) => {
             )}
             <p>{msg?.message}</p>
         </div>
-        <span className="timeline">{format(msg?.createdAt?.toDate())}</span>
+        <span ref={scrollRef} className="timeline">{format(msg?.createdAt?.toDate())}</span>
     </div>
   );
 }
