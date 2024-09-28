@@ -17,6 +17,12 @@
     border-radius: 0.5rem;
 }
 
+.login .wrapper .logo {
+    width: 50%;
+    margin: auto;
+    display: block;
+}
+
 .login .wrapper .heading {
     font-size: 2rem;
     text-align: center;

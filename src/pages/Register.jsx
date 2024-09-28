@@ -50,6 +50,7 @@ const Register = () => {
   return (
     <div className="register">
       <div className="wrapper">
+      <img src="src/assets/images/ChatifyLogo1.png" className="logo"/>
         <h2 className="heading">Register</h2>
         <form onSubmit={handleSubmit} className="form">
           {error && <span className="error-msg">{error}</span>}
