@@ -6,6 +6,7 @@ import Avatar from "./Avatar";
 import ImageSlider from "./ImageSlider";
 import InfoContainer from "./InfoContainer";
 import Message from "./Message";
+import { v4 as getID } from "uuid";
 
 const Content = ({ setChat }) => {
   const { currentChat } = useContext(Context);
@@ -13,17 +14,38 @@ const Content = ({ setChat }) => {
   const [onMenu, setOnMenu] = useState(false);
   const [onViewer, setOnViewer] = useState(false);
   const [messages, setMessages] = useState(SeedMessages);
+  const [images, setImages] = useState([]);
   const [msgImages, setMsgImages] = useState([]);
 
   const openImageViewer = (images) => {
     setMsgImages(images);
     setOnViewer(true);
-  }
+  };
 
   const closeImageViewer = useCallback(() => {
     setMsgImages([]);
     setOnViewer(false);
-  })
+  });
+
+  const handleImages = (e) => {
+    const files = e.target.files;
+    if (files) {
+      const tmpImages = [];
+      for (let i = 0; i < files.length; i++) {
+        const id = getID();
+        const img = {
+          id,
+          origin: files[i].name,
+          filename: id + "-" + files[i].name,
+          file: files[i],
+        };
+        tmpImages.push(img);
+      }
+      setImages(tmpImages);
+    }
+  };
+
+  console.log(images);
 
   useEffect(() => {
     const keyDown = (event) => {
@@ -69,8 +91,28 @@ const Content = ({ setChat }) => {
             </div>)}
         </div>
         <div className="bottom">
+          {images.length > 0 && (
+            <div className="images-preview">
+            {images.map((image) => {
+              <div className="image-item" key={image?.id}>
+                <img src={URL.createObjectURL(image?.file)} alt=""/>
+                <i className="fa-solid fa-rectangle-xmark"></i>
+              </div>
+            })}
+          </div>
+        )}
           <div className="app-icon">
+            <label htmlFor="upload-images">
+              <input
+                type="file"
+                accept=".jpg,.jpeg,.png"
+                id="upload-images"
+                multiple
+                style={{ display: 'none', cursor: 'pointer' }}
+                onChange={handleImages}
+              />
             <i className="fa-solid fa-image"></i>
+            </label>
           </div>
           <textarea placeholder="Write a message" />
           <div className="app-icon">
