@@ -58,7 +58,6 @@ export const deleteUserAsync = async(id) => {
 // Get All Users
 export const getUsersAsync = async(user) => {
     if (!user) return;
-    // console.log(user);
     try {
         const snapshots = await getDocs(
             query(collection(db, "users"),
@@ -85,7 +84,6 @@ export const getUserAsync = async(id) => {
 // Conversations
 export const createConversationAsync = async(userId, friendId) => {
     try {
-        console.log(userId, friendId);
         const conv = {
             members: [userId, friendId],
             last: { message: "", createdAt: null },
@@ -96,7 +94,6 @@ export const createConversationAsync = async(userId, friendId) => {
         let result = null;
         const convId = convDoc.id;
         if (convId) {
-            // Get friend infos
             const userDoc = doc(db, "users", friendId);
             const user_res = await getDoc(userDoc);
             const user_data = getSnapshotData(user_res);
@@ -114,7 +111,6 @@ export const createConversationAsync = async(userId, friendId) => {
                 };
             }
         }
-        // Return conversation w/ contact info's
         return result;
     } catch (error) {
         console.log(error);
