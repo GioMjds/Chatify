@@ -16,11 +16,14 @@ export const Reducer = (state, action) => {
                 ...state,
                 auth: {
                     username: action.payload.username,
+                    desc: action.payload.desc,
                     profile: action.payload.profile?.url,
                     email: action.payload.email,
                 },
                 user: {
+                    ...state.user,
                     username: action.payload.username,
+                    desc: action.payload.desc,
                     profile: action.payload.profile,
                     email: action.payload.email,
                 },

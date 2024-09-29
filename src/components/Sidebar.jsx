@@ -13,6 +13,7 @@ import Profile from "./Profile";
 const Sidebar = () => {
   const { auth, users, dispatch, chats, currentChat } = useContext(Context);
   const [newChat, setNewChat] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [onProfile, setOnProfile] = useState(false);
   const [contacts, setContacts] = useState([]);
   const [conversations, setConversations] = useState([]);
@@ -160,7 +161,12 @@ const Sidebar = () => {
           </div>
         </div>
         <div className="bottom">
-          <button className="logout-btn" onClick={handleLogout}>
+          <button
+            disabled={loading}
+            className="logout-btn"
+            onClick={handleLogout}
+            style={{ cursor: "pointer" }}
+          >
             <i className="fa-solid fa-power-off"></i>Logout
           </button>
         </div>

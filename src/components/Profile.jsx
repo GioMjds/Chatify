@@ -48,13 +48,14 @@ const Profile = ({ open, setOpen }) => {
             const res = await updateUserAsync(tempUser, profileImage);
             if (res) {
                 dispatch(updateProfile(res));
+                dispatch({ type: "UPDATE_USER", payload: tempUser });
             }
             setOnEdit(false);
             setLoading(false);
         } catch {
             setLoading(false);
         }
-    }
+    };
 
     return (
     <div className={open ? "profile active" : "profile"}>
@@ -69,10 +70,11 @@ const Profile = ({ open, setOpen }) => {
         {onEdit ? (
             <div className="profile-infos">
                 <div className="avatar-wrapper">
-                    {profileImage ? (<Avatar
-                        src={profileImage? URL.createObjectURL(profileImage.file) : ""}
-                        height={150}
-                        width={150}
+                    {profileImage ? (
+                        <Avatar
+                            src={profileImage? URL.createObjectURL(profileImage.file) : ""}
+                            height={150}
+                            width={150}
                     />
                     ) : (
                     <Avatar
