@@ -6,7 +6,6 @@ Chatify is a real-time chat application that enables users to communicate instan
 
 - **Real-time Messaging**: Send and recieve messages instantly using Firebase.
 - **User Authentication**: Secure login and registration with Firebase Authentication.
-- **Online Status**: Know when someone is typing in real-time.
 - **Message History**: Store and retrieve message history from Firebase Firestore.
 - **Responsive Design**: Optimized for both desktop and mobile devices.
 
