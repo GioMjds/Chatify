@@ -30,6 +30,7 @@ Chatify is a real-time chat application that enables users to communicate instan
 To run Chatify locally, follow these steps:
 
 1. Clone this repository:
+   
     ```
     git clone https://github.com/GioMjds/Chatify.git
     cd Chatify
@@ -43,6 +44,7 @@ To run Chatify locally, follow these steps:
 3. Set up Firebase:
     - Go to [Firebase Console](https://console.firebase.google.com/), create a new project, and set up Firestore and Authentication
     - Create a `.env` file in the root of your project and add your Firebase credentials
+   
     ```
     VITE_API_KEY=<your_firebase_api_key>
     VITE_AUTH_DOMAIN=<your_firebase_auth_domain>
@@ -53,6 +55,7 @@ To run Chatify locally, follow these steps:
     ```
 
 4. Start the development server:
+   
     ```
     npm run dev
     ```
