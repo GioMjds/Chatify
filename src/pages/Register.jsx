@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../assets/css/register.css";
 import { registerAsync } from "../services/authServices";
 
@@ -61,7 +61,7 @@ const Register = () => {
             {loading ? "Loading..." : "Register"}
           </button>
           <span className="link">
-            <a href="/login">Do you have an account already? Login here</a>
+            <Link to='/login'>Do you have an account already? Login here</Link>
           </span>
         </form>
       </div>

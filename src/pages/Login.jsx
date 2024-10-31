@@ -4,6 +4,7 @@ import { loginAsync } from "../services/authServices";
 import { getUserAsync } from "../services/chatServices";
 import { signIn } from "../context/Actions";
 import { Context } from "../context/Context";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const { dispatch } = useContext(Context);
@@ -70,7 +71,7 @@ const Login = () => {
             {loading ? "Loading..." : "Login"}
           </button>
           <span className="link">
-            <a href="/register">No account? Register here</a>
+            <Link to="/register">No account? Register here</Link>
           </span>
         </form>
       </div>
